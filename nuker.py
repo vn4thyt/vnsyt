@@ -1,6 +1,5 @@
 # Disclaimer: This is only for entertainment and educational purposes.  
 # I’m not responsible for what you do with it or any consequences.  
-# Please use responsibly and always follow Discord’s ToS & Guidelines.  
 # Made by VN :3
 
 import discord
