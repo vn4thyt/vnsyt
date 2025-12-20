@@ -63,7 +63,7 @@ EXOZ-MT
 print(gradient(title))
 
 menu = """
-[ 1 ] Generate & Check Usernames
+[ 1 ] Generate Usernames
 [ 2 ] Check Single Username
 [ 0 ] Exit
 """
