@@ -7,7 +7,7 @@ from discord.ext import commands
 import asyncio
 import aiohttp
 import io
-import datetime
+from datetime import datetime
 import random
 
 # CONFIG #
