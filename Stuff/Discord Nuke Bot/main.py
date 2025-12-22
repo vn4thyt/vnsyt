@@ -13,9 +13,9 @@ import random
 # CONFIG #
 class Config:
     # ===== BOT SETTINGS =====
-    TOKEN = " "  # Your bot token from Discord Developer Portal
+    TOKEN = ""  # Your bot token from Discord Developer Portal
     PREFIX = "."  # The prefix to use before commands (e.g. .nuke)
-    WHITELIST = [ ]  # List of user IDs who can use the bot commands
+    WHITELIST = []  # List of user IDs who can use the bot commands
 
     # ===== MESSAGE SETTINGS =====
     SPAM_MESSAGE = "@everyone"  # The message that will be spammed in channels
