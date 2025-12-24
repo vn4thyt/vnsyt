@@ -6,9 +6,9 @@
 
 TOKEN = {token}
 WHITELIST = {whitelsit}
-main_channel_ID = {main_channel}
-prefered_prefix = {prefix}
+main_channel = {main_channel}
+prefix = {prefix}
 add_to_startup = {add_to_startup}
 silent_mode = {silent_mode}
 
-print(TOKEN, WHITELIST, main_channel_ID, prefered_prefix, add_to_startup, silent_mode)
+print(TOKEN, WHITELIST, main_channel, prefix, add_to_startup, silent_mode)
