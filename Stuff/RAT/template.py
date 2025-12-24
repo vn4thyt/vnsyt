@@ -4,6 +4,11 @@
 
 # If you got ratted, and reversed engineered the file back here - Please note I take NO accountability for what others do with my projects. If you would like to know how to remove the rat and stay safe, please DM 'vn4th' on Discord.
 
-print("hello")
-print("hello2")
-print("hello3")
+TOKEN = {token}
+WHITELIST = {whitelsit}
+main_channel_ID = {main_channel}
+prefered_prefix = {prefix}
+add_to_startup = {add_to_startup}
+silent_mode = {silent_mode}
+
+print(TOKEN, WHITELIST, main_channel_ID, prefered_prefix, add_to_startup, silent_mode)
