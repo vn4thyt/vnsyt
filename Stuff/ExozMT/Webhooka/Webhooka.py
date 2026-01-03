@@ -1,6 +1,6 @@
 # Disclaimer: This is only for entertainment and educational purposes.  
 # I’m not responsible for what you do with it or any consequences.  
-# Made by VN :3
+# Made by Vexi :3
 
 import requests
 import base64
@@ -60,7 +60,7 @@ def gradient(text):
     return "\n".join(out_lines)
 
 title = r"""
-EXOZ-MT - Thanks to Vn, this product is brought to you for free! 🎀
+EXOZ-MT - Thanks to Vexi, this product is brought to you for free! 🎀
 █████████████████████████████████████████████████████████████████████████████████
 
 ██╗    ██╗███████╗██████╗ ██╗  ██╗ ██████╗  ██████╗ ██╗  ██╗ █████╗ 
