@@ -1,6 +1,6 @@
 # Disclaimer: This is only for entertainment and educational purposes.  
 # I’m not responsible for what you do with it or any consequences.  
-# Made by VN :3
+# Made by Vexi :3
 
 import asyncio
 import aiohttp
@@ -74,7 +74,7 @@ def table(data):
         print(f"{LIGHT_RED}{row[0]:<{col_widths[0]}}| {row[1]:<{col_widths[1]}}{RESET}")
 
 title = r"""
-EXOZ-MT - Thanks to Vn, this product is brought to you for free! 🎀
+EXOZ-MT - Thanks to Vexi, this product is brought to you for free! 🎀
 █████████████████████████████████████████████████████████████████████████████████
 
 ██╗██████╗     ██╗███╗   ██╗███████╗ ██████╗ 
