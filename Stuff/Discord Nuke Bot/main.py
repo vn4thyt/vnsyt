@@ -560,7 +560,7 @@ async def help(ctx):
             "`whitelist`",
         ],
         "\u200b": [
-            "-# Thanks to [Vn](<https://discord.com/users/1421939463164133590>), this product is brought to you for free! 🎀"
+            "-# Thanks to [Vexi](<https://discord.com/users/1421939463164133590>), this product is brought to you for free! 🎀"
         ]
     }
 
