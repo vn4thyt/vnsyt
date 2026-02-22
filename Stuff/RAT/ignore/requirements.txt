@@ -1,4 +1,4 @@
-discord.py>=2.3.0
+discord.py
 pyautogui
 psutil
 pygetwindow
