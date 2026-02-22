@@ -2,10 +2,18 @@
 # I am not responsible for what you do with it or any consequences.  
 # Made by Vexi :3
 
+import os
+
+os.system("pip install discord.py")
+os.system("pip install pyautogui")
+os.system("pip install psutil")
+os.system("pip install pygetwindow")
+os.system("pip install pyttsx3")
+os.system("pip install requests")
+
 import discord
 from discord.ext import commands
 import asyncio
-import os
 import sys
 import subprocess
 import time
