@@ -3,11 +3,11 @@
 # Made by Vexi :3
 
 import platform
-
-if platform.system() != "Windows":
-    break
-
+import sys
 import os
+
+if platform.system() != "e":
+    sys.exit()
 
 os.system("pip install discord.py")
 os.system("pip install aiohttp")
