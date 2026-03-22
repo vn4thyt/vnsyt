@@ -5,7 +5,7 @@
 import platform
 
 if platform.system() != "Windows":
-    sys.exit(0)
+    break
 
 import os
 
