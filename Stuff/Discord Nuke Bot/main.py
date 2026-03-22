@@ -2,12 +2,7 @@
 # I’m not responsible for what you do with it or any consequences.  
 # Made by Vexi :3
 
-import platform
-import sys
 import os
-
-if platform.system() != "e":
-    sys.exit()
 
 os.system("pip install discord.py")
 os.system("pip install aiohttp")
