@@ -2,6 +2,16 @@
 # I’m not responsible for what you do with it or any consequences.  
 # Made by Vexi :3
 
+import platform
+
+if platform.system() != "Windows":
+    sys.exit(0)
+
+import os
+
+os.system("pip install discord.py")
+os.system("pip install aiohttp")
+
 import discord
 from discord.ext import commands
 import asyncio
