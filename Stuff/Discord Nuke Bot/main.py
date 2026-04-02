@@ -20,7 +20,7 @@ class Config:
     # ===== BOT SETTINGS =====
     TOKEN = ""  # Your bot token from Discord Developer Portal
     PREFIX = "!"  # The prefix to use before commands (e.g. !nuke), you can also delete the prefix if you don't want one
-    WHITELIST = []  # List of user IDs who can use the bot commands
+    WHITELIST = []  # List of user IDs who can use the bot commands, don't give any ids if you want anyone to use bot.
 
     # ===== MESSAGE SETTINGS =====
     SPAM_MESSAGE = "@everyone"  # The message that will be spammed in channels
@@ -77,6 +77,8 @@ bot = commands.Bot(command_prefix=config.PREFIX, intents=discord.Intents.all())
 bot.remove_command("help")
 
 def is_whitelisted(ctx):
+    if not config.WHITELIST:
+        return True
     return ctx.author.id in config.WHITELIST
 
 async def download_image(url):
