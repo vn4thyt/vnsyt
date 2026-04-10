@@ -215,7 +215,7 @@ Silent Mode: {silent_mode}""")
                     print(f"{GREEN}Deleted build folder{RESET}")
                 except Exception as e:
                     print(f"{RED}Failed to delete build folder: {e}{RESET}")
-                    print(f"{YELLOW}You may need to delete this folder maually.")
+                    print(f"{YELLOW}You may need to delete this folder manually.")
             
             time.sleep(0.5)
             
@@ -225,7 +225,7 @@ Silent Mode: {silent_mode}""")
                     print(f"{GREEN}Deleted dist folder{RESET}")
                 except Exception as e:
                     print(f"{RED}Failed to delete dist folder: {e}{RESET}")
-                    print(f"{YELLOW}You may need to delete this folder maually.")
+                    print(f"{YELLOW}You may need to delete this folder manually.")
             
             os.chdir(original_dir)
             
