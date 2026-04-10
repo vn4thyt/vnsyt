@@ -125,7 +125,7 @@ Prefix: {prefix}
 Add To Victim's Startup: {add_to_startup}
 Silent Mode: {silent_mode}""")
 
-        confirm = input(f"\n{GREEN}Would you like to comfirm these? (y/n) → {RESET}").strip().lower()
+        confirm = input(f"\n{GREEN}Would you like to confirm these? (y/n) → {RESET}").strip().lower()
 
         if confirm == "y":
             
