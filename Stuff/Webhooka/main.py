@@ -60,7 +60,7 @@ def gradient(text):
     return "\n".join(out_lines)
 
 title = r"""
-EXOZ-MT
+Thanks to Vexi, this product is brought to you for free! 🎀
 █████████████████████████████████████████████████████████████████████████████████
 
 ██╗    ██╗███████╗██████╗ ██╗  ██╗ ██████╗  ██████╗ ██╗  ██╗ █████╗ 
