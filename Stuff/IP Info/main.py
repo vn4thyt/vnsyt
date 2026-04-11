@@ -74,7 +74,7 @@ def table(data):
         print(f"{LIGHT_RED}{row[0]:<{col_widths[0]}}| {row[1]:<{col_widths[1]}}{RESET}")
 
 title = r"""
-EXOZ-MT
+Thanks to Vexi, this product is brought to you for free! 🎀
 █████████████████████████████████████████████████████████████████████████████████
 
 ██╗██████╗     ██╗███╗   ██╗███████╗ ██████╗ 
