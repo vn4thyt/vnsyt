@@ -2,6 +2,7 @@
 # I’m not responsible for what you do with it or any consequences.  
 # Made by Vexi :3
 
+# -*- coding: utf-8 -*-
 import os
 import re
 import requests
