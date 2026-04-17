@@ -4,8 +4,8 @@
 
 import os
 
-os.system("pip install discord.py")
-os.system("pip install aiohttp")
+os.system("python -m pip install discord.py")
+os.system("python -m pip install aiohttp")
 
 import discord
 from discord.ext import commands
