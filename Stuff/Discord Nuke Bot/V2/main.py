@@ -30,6 +30,7 @@ class Config:
         5, # Your bot ID from Discord Developer Portal
     ]
 
+    # FOR EACH BOT
     NUKEMESSAGE = "@everyone | **EZ GET NUKED**" # The message that will be spammed in channels
     NUKEMESSAGECOUNT = 10 # How many times to send the spam message in each channel
     NUKERENAME = "NUKED" # New name for the server
