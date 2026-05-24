@@ -18,7 +18,7 @@ namespace Valex.Assets.Classes
 	{
 		private void checkAtom()
 		{
-      // Crack: Bypass anticrack
+      // Crack: Bypass antidebugged
 		}
 	}
 }
