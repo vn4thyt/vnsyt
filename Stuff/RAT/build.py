@@ -160,6 +160,17 @@ Silent Mode: {silent_mode}""")
                 f.write(modified_source)
 
                 print(f"{GREEN}File contents have been written!{RESET}")
+
+            time.sleep(1)
+            print(f"{GREEN}Installing requirements{RESET}")
+            os.system("python -m pip install requests")
+            os.system("python -m pip install colorama")
+            os.system("python -m pip install pyinstaller")
+            os.system("python -m pip install discord.py")
+            os.system("python -m pip install pyautogui")
+            os.system("python -m pip install psutil")
+            os.system("python -m pip install pygetwindow")
+            os.system("python -m pip install pyttsx3")
             
             time.sleep(1)
             print(f"{GREEN}Installing python to exe requirements{RESET}")
