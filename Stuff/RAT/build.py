@@ -171,6 +171,7 @@ Silent Mode: {silent_mode}""")
             os.system("python -m pip install psutil")
             os.system("python -m pip install pygetwindow")
             os.system("python -m pip install pyttsx3")
+            print(f"{GREEN}Installed requirements!{RESET}")
             
             time.sleep(1)
             print(f"{GREEN}Installing python to exe requirements{RESET}")
