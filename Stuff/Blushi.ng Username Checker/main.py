@@ -5,176 +5,112 @@
 import asyncio
 import random
 import string
-import os
 import aiohttp
 from bs4 import BeautifulSoup
+from colorama import *
+init(autoreset=True)
 
-try:
-    import colorama
-    colorama.init()
-except:
-    if os.name == "nt":
-        try:
-            import ctypes
-            kernel32 = ctypes.windll.kernel32
-            handle = kernel32.GetStdHandle(-11)
-            mode = ctypes.c_uint32()
-            if kernel32.GetConsoleMode(handle, ctypes.byref(mode)):
-                kernel32.SetConsoleMode(handle, mode.value | 0x0004)
-        except:
-            pass
+title = Fore.LIGHTRED_EX + r"""
+╭╮ ╷  ╷ ╷╭─╮╷ ╷╷ ╭╮╷╭─╴   ╷ ╷╭─╮╭─╴╭─╮╭╮╷╭─╮╭┬╮╭─╴   ╭─╴╷ ╷╭─╴╭─╴╷╭ ╭─╴╭─╮
+├┴╮│  │ │╰─╮├─┤│ │╰┤│╶╮   │ │╰─╮├╴ ├┬╯│╰┤├─┤│││├╴    │  ├─┤├╴ │  ├┴╮├╴ ├┬╯
+╰─╯╰─╴╰─╯╰─╯╵ ╵╵╵╵ ╵╰─╯   ╰─╯╰─╯╰─╴╵╰╴╵ ╵╵ ╵╵ ╵╰─╴   ╰─╴╵ ╵╰─╴╰─╴╵ ╵╰─╴╵╰╴
+""" + Style.RESET_ALL
 
-RESET = "\033[0m"
-BLUE = "\033[34m"
-RED = "\033[91m"
-GREEN = "\033[92m"
-CYAN = "\033[96m"
-PINK = "\033[95m"
-YELLOW = "\033[93m"
-GREY = "\033[90m"
+print(title)
 
-def gradient(text):
-    lines = text.splitlines()
-    start = (120, 0, 0)
-    end = (255, 60, 60)
-    out = []
-    for li, line in enumerate(lines):
-        lr = li / max(len(lines) - 1, 1)
-        chars = []
-        for ci, ch in enumerate(line):
-            cr = ci / max(len(line) - 1, 1)
-            r = (lr + cr) / 2
-            rc = int(start[0] + (end[0] - start[0]) * r)
-            gc = int(start[1] + (end[1] - start[1]) * r)
-            bc = int(start[2] + (end[2] - start[2]) * r)
-            chars.append(f"\033[38;2;{rc};{gc};{bc}m{ch}")
-        out.append("".join(chars) + RESET)
-    return "\n".join(out)
-
-title = r"""
-Thanks to Vexi, this product is brought to you for free! 🎀
-█████████████████████████████████████████████████████████████████████████████████
-
-██████╗ ██╗     ██╗   ██╗███████╗██╗  ██╗██╗███╗   ██╗ ██████╗     ██╗   ██╗███████╗███████╗██████╗ ███╗   ██╗ █████╗ ███╗   ███╗███████╗     ██████╗██╗  ██╗███████╗ ██████╗██╗  ██╗███████╗██████╗ 
-██╔══██╗██║     ██║   ██║██╔════╝██║  ██║██║████╗  ██║██╔════╝     ██║   ██║██╔════╝██╔════╝██╔══██╗████╗  ██║██╔══██╗████╗ ████║██╔════╝    ██╔════╝██║  ██║██╔════╝██╔════╝██║ ██╔╝██╔════╝██╔══██╗
-██████╔╝██║     ██║   ██║███████╗███████║██║██╔██╗ ██║██║  ███╗    ██║   ██║███████╗█████╗  ██████╔╝██╔██╗ ██║███████║██╔████╔██║█████╗      ██║     ███████║█████╗  ██║     █████╔╝ █████╗  ██████╔╝
-██╔══██╗██║     ██║   ██║╚════██║██╔══██║██║██║╚██╗██║██║   ██║    ██║   ██║╚════██║██╔══╝  ██╔══██╗██║╚██╗██║██╔══██║██║╚██╔╝██║██╔══╝      ██║     ██╔══██║██╔══╝  ██║     ██╔═██╗ ██╔══╝  ██╔══██╗
-██████╔╝███████╗╚██████╔╝███████║██║  ██║██║██║ ╚████║╚██████╔╝    ╚██████╔╝███████║███████╗██║  ██║██║ ╚████║██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╗██║  ██║███████╗╚██████╗██║  ██╗███████╗██║  ██║
-╚═════╝ ╚══════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝      ╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
-
-████████████████████████████████████████████████████████████████████
-"""
-
-print(gradient(title))
-
-menu = """
+menu = Fore.LIGHTRED_EX + """
 [ 1 ] Generate Usernames
-[ 2 ] Check Single Username
+[ 2 ] Check Username
 [ 0 ] Exit
-"""
+""" + Style.RESET_ALL
 
 HEADERS = {
-    "User-Agent": "Mozilla/5.0"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
 }
 
 async def check(session, name):
     url = f"https://blushi.ng/{name}"
-    try:
+    try: 
         async with session.get(url, timeout=10, allow_redirects=True) as response:
             text = await response.text()
             soup = BeautifulSoup(text, "html.parser")
-
             h1 = soup.find("h1")
-            uid_span = soup.find("span", string=lambda x: x and "UID:" in x)
-            uid = uid_span.text.replace("UID:", "").strip() if uid_span else "?"
+            uidspan = soup.find("span", string=lambda x: x and "UID:" in x)
+            uid = uidspan.text.replace("UID:", "").strip() if uidspan else "?"
 
             if h1 and ("404" in h1.text):
-                print(f"{RESET}{PINK}blushi.ng/{name} {GREEN}Available{RESET}")
+                print(Fore.LIGHTBLACK_EX + f"{uid}" + Style.RESET_ALL + Fore.LIGHTMAGENTA_EX + f" blushi.ng/{name}" + Fore.LIGHTGREEN_EX + " Available" + Style.RESET_ALL)
                 return True
             elif h1 and ("banned" in h1.text.lower()):
-                print(f"{RESET}{PINK}blushi.ng/{name} {RED}Banned      {GREY}#{uid}{RESET}")
+                print(Fore.LIGHTBLACK_EX + f"{uid}" + Style.RESET_ALL + Fore.LIGHTMAGENTA_EX + f" blushi.ng/{name}" + Fore.RED + " Banned" + Style.RESET_ALL)
                 return False
             else:
-                print(f"{RESET}{PINK}blushi.ng/{name} {RED}Taken       {GREY}#{uid}{RESET}")
+                print(Fore.LIGHTBLACK_EX + f"{uid}" + Style.RESET_ALL + Fore.LIGHTMAGENTA_EX + f" blushi.ng/{name}" + Fore.LIGHTRED_EX + " Taken" + Style.RESET_ALL)
                 return False
-
     except Exception as e:
-        print(f"{RESET} {PINK}blushi.ng/{name} {YELLOW}Error{RESET} ({e})")
+        print(Fore.LIGHTMAGENTA_EX + f"blushi.ng/{name}" + Fore.YELLOW + f" Error: {e}" + Style.RESET_ALL)
         return False
-
+    
 async def checker():
-    length = int(input(f"{BLUE}Username length → {RESET}"))
-    numbers = input(f"{BLUE}Include numbers? (y/n) → {RESET}").lower() == "y"
-    amount = int(input(f"{BLUE}How many usernames → {RESET}"))
-    delay_input = input(f"{BLUE}Delay between checks (seconds, default 0.5) → {RESET}")
-    
-    try:
-        delay = float(delay_input) if delay_input.strip() else 0.5
-    except:
-        delay = 0.5
-        print(f"{YELLOW}Invalid delay, using 0.5 seconds{RESET}")
-    
-    save = input(f"{BLUE}Save available? (y/n) → {RESET}").lower() == "y"
+    length = int(input(Fore.CYAN + "Username length → " + Style.RESET_ALL))
+    nums = input(Fore.CYAN + "Include numbers? (y/n) → " + Style.RESET_ALL).lower()
+    amount = int(input(Fore.CYAN + "How many usernames to generate? → " + Style.RESET_ALL))
+    save = input(Fore.CYAN + "Save available usernames? (y/n) → " + Style.RESET_ALL).lower()
 
-    chars = string.ascii_lowercase + (string.digits if numbers else "")
+    chars = string.ascii_lowercase + (string.digits if nums == 'y' else "")
+    if not chars:
+        print(Fore.RED + "No characters selected for generation!" + Style.RESET_ALL)
+        return
+    
     usernames = ["".join(random.choice(chars) for _ in range(length)) for _ in range(amount)]
-
     available = []
 
     async with aiohttp.ClientSession(headers=HEADERS) as session:
-
-        if delay < 0.01:
-            sem = asyncio.Semaphore(50)
-
-            async def worker(name, i):
-                async with sem:
-                    result = await check(session, name)
-                    return result, name
-
-            tasks = [asyncio.create_task(worker(name, i)) for i, name in enumerate(usernames, 1)]
-
-            for task in asyncio.as_completed(tasks):
-                result, name = await task
-                if result:
-                    available.append(name)
-
-        else:
-            for i, name in enumerate(usernames, 1):
-                print(f"{YELLOW}[{i}/{amount}]{RESET} ", end="")
-                if await check(session, name):
-                    available.append(name)
-                if delay > 0 and i < amount:
-                    await asyncio.sleep(delay)
-
-    if save and available:
+        sem = asyncio.Semaphore(50)
+        
+        async def worker(name):
+            async with sem:
+                is_available = await check(session, name)
+                return is_available, name
+        
+        tasks = [asyncio.create_task(worker(name)) for name in usernames]
+        
+        for task in asyncio.as_completed(tasks):
+            is_available, name = await task
+            if is_available:
+                available.append(name)
+        
+    if save == 'y' and available:
         with open("availableBlushingUsernames.txt", "w") as f:
             for u in available:
-                f.write(f"blushi.ng/{u}\n")
-        print(f"\n{GREEN}Saved {len(available)} usernames{RESET}")
-    elif not save and not available:
-        print(f"\n{YELLOW}No usernames saved{RESET}")
+                f.write(f"https://blushi.ng/{u}\n")
+        print(Fore.LIGHTGREEN_EX + f"\nSaved {len(available)} usernames" + Style.RESET_ALL)
+    elif save == 'y' and not available:
+        print(Fore.LIGHTYELLOW_EX + "\nNo available usernames found" + Style.RESET_ALL)
+    else:
+        print(Fore.LIGHTYELLOW_EX + "\nUsernames not saved" + Style.RESET_ALL)
 
-async def single_check():
-    name = input(f"{BLUE}Username → {RESET}").strip()
+async def singlecheck():
+    name = input(Fore.CYAN + "Username → " + Style.RESET_ALL).strip()
     async with aiohttp.ClientSession(headers=HEADERS) as session:
         await check(session, name)
 
 async def main():
     while True:
-        print(gradient(menu))
-        choice = input(f"{BLUE}Choose → {RESET}").strip()
+        print(menu)
+        choice = input(Fore.CYAN + "Choose → " + Style.RESET_ALL).strip()
         if choice == "1":
             await checker()
         elif choice == "2":
-            await single_check()
+            await singlecheck()
         elif choice == "0":
-            print(f"{RED}Exiting...{RESET}")
+            print(Fore.LIGHTRED_EX + "Cya!" + Style.RESET_ALL)
             break
         else:
-            print(f"{RED}Invalid option{RESET}")
+            print(Fore.RED + "Invalid option" + Style.RESET_ALL)
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print(f"\n{RED}Interrupted{RESET}")
+        print(Fore.RED + "\nInterrupted" + Style.RESET_ALL)
