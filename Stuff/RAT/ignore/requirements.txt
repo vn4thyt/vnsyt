@@ -1,6 +1,0 @@
-discord.py
-pyautogui
-psutil
-pygetwindow
-pyttsx3
-requests
